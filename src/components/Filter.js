@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import style from "./contacts.module.css";
+import { connect } from 'react-redux';
+import { changeFilter } from '../redux/actions';
 
-export default function Filter({handleChange}) {
+function Filter({handleChange}) {
   return (
       <>
         <label htmlFor="find" className={style.label}>
@@ -23,6 +25,12 @@ export default function Filter({handleChange}) {
       </>
     );
 }
+
+const dispatchProps = dispatch => ({
+  handleChange: e => dispatch(changeFilter(e.target.value.toLowerCase()))
+});
+
+export default connect(null, dispatchProps)(Filter);
 
 Filter.propTypes = {
   handleChange: PropTypes.func.isRequired,

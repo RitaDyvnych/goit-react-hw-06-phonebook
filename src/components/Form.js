@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import style from "./contacts.module.css";
 import { v4 as uuidv4 } from "uuid";
+import { connect } from 'react-redux';
+import { contactSubmit } from '../redux/actions';
 
-export default function Form({handleSubmit}) {
+function Form({handleSubmit}) {
   const [name, setName] = useState("");
-  const [number, setNumber] = useState('');
+  const [number, setNumber] = useState("");
 
   const inputNameId = uuidv4();
   const inputNumberId = uuidv4();
@@ -23,9 +25,9 @@ export default function Form({handleSubmit}) {
           className={style.form}
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit(name, number);
-            setName('');
-            setNumber('');
+            handleSubmit([name, number]);
+            setName("");
+            setNumber("");
           }}
         >
           <label htmlFor={inputNameId}>Name</label>
@@ -62,6 +64,12 @@ export default function Form({handleSubmit}) {
     );
 
 }
+
+const dispatchProps = dispatch => ({
+  handleSubmit: data => dispatch(contactSubmit(data))
+});
+
+export default connect(null,dispatchProps)(Form);
 
 Form.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
